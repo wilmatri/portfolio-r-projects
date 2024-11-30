@@ -1,0 +1,61 @@
+#PRAKTIKUM ANALISIS MULTIVARIAT_TUGAS 3
+
+#NOMOR 1
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANMUL")
+nomor1=read.csv("TUGAS3.1.CSV", sep = ",")
+nomor1
+#a. Pengelompokan menggunakan metode Average
+D=dist(nomor1[,2:7],method="euclidean") 
+D 
+y = hclust(D, method = "average")
+y
+# Visualisasi dendrogram Average dengan metode euclidean
+plot(y, labels = nomor1$Individu, main = "Dendrogram Metode Average (Euclidean)", xlab = "Individu", ylab = "Jarak", sub = "")
+rect.hclust(z, k = 4, border = "blue")
+
+# b. Pengelompokan menggunakan metode Average tetapi konsep jarak adalah jarak maksimum
+D_maximum = dist(nomor1[, 2:7], method = "maximum") 
+D_maximum
+y_max = hclust(D_maximum, method = "average")
+y_max
+
+# Visualisasi dendrogram Average dengan jarak maksimum
+plot(y_max, labels = nomor1$Individu, main = "Dendrogram Average (Jarak Maksimum)", xlab = "Individu", ylab = "Jarak", sub = "")
+rect.hclust(y_max, k = 4, border = "green") # Membuat batas untuk 4 kelompok
+
+#c. C.	Tentukan keanggotaan setiap kelompok apabila banyaknya kelompok adalah 4
+# Menentukan keanggotaan kelompok (Average,eucledian )
+anggota_euclidean=data.frame(id=nomor1$Individu, cutree(y,k=4))
+anggota_euclidean
+# Menentukan keanggotaan kelompok (Average, maximum)
+anggota_maximum=data.frame(id=nomor1$Individu, cutree(y_max,k=4))
+anggota_maximum
+
+
+#NOMOR 2
+library(ggplot2)
+library(factoextra)
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANMUL")
+nomor2=read.csv("TUGAS3.2.CSV", sep = ",")
+nomor2
+fviz_nbclust(nomor2[,2:6], FUNcluster =  kmeans, method="wss") 
+fviz_nbclust(nomor2[,2:6], FUNcluster =  kmeans, method="silhouette")
+klaster=kmeans(nomor2[,2:6], centers =3)
+klaster
+fviz_cluster(klaster,  data = nomor2[,2:6])
+final=data.frame(nomor2, klaster$cluster)
+final
+
+
+#NOMOR 3
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANMUL")
+nomor3=read.csv("TUGAS3.3.CSV", sep = ",")
+nomor3
+korelasi=cor(nomor3)
+round(korelasi,digits = 2)
+PCA=prcomp(nomor3, center = TRUE, scale. = TRUE)
+summary(PCA)
+plot(PCA, type="lines")
+round(PCA$rotation, digits = 3)
+fviz_pca_var(PCA)
+round(PCA$x[,1:2], digits = 3)
