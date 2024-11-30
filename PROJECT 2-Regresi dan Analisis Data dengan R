@@ -1,0 +1,143 @@
+#UTS_PRAK_ANREG
+#WILMA TRI ADNAYAN_22106010022_27
+#GENAP_GANJIL(D)
+#NOMER 1(D)
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANREG")
+
+#Y=VARIABEL DEPENDEN(IHSG),X=VARIABEL INDEPENDEN(ANTM)
+datauts1=read.csv("UTS1.CSV", header = TRUE)
+datauts1
+
+plot(datauts1$ANTM,datauts1$IHSG,xlab="ANTM",ylab="IHSG",main="Hubungan ANTM DAN IHSG") 
+y=datauts1$IHSG
+x=datauts1$ANTM
+abline(lm(y~x))
+
+# Membuat model regresi
+model <- lm(y~x,data = datauts1)
+model
+summary(model)
+cor.test(y,x) 
+cor.test(y,x,method = "pearson") 
+
+anova(model)
+
+
+#UTS_PRAK_ANREG
+#WILMA TRI ADNAYAN_22106010022_27
+#GENAP_GANJIL(D)
+#NOMER 2(D)
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANREG")
+datauts2=read.csv("UTS2.CSV", header = TRUE)
+datauts2
+
+#Give name for variabel 
+y=datauts2$IHSG;y
+x1=datauts2$ITMG;x1
+x2=datauts2$PGAS;x2
+x3=datauts2$PTBA;x3
+x4=datauts2$ADMR;x4
+x5=datauts2$INCO;x5
+x6=datauts2$INKP;x6
+
+#Matriks scater plot
+pairs(datauts2)
+
+#Model Regresi
+model1 <- lm(y~x1+x2+x3+x4+x5+x6, data=datauts2)
+model1
+summary(model1)
+anova(model1)
+
+#Mengeluarkan variabel  X4 ADMR
+model2 <- lm(y~x1+x2+x3+x5+x6, data=datauts2)
+model2
+summary(model2)
+anova(model2)
+
+#Mengeluarkan variabel  X6 INKP
+model3 <- lm(y~x1+x2+x3+x5, data=datauts2)
+model3
+summary(model3)
+anova(model3)
+
+#Mengeluarkan variabel  X3 PTBA
+model4 <- lm(y~x1+x2+x5, data=datauts2)
+model4
+summary(model4)
+anova(model4)
+
+##Mengeluarkan variabel  X2 PGAS
+model5 <- lm(y~x1+x5, data=datauts2)
+model5
+summary(model5)
+anova(model5)
+
+##Mengeluarkan variabel  X5 INCO
+model6 <- lm(y~x1, data=datauts2)
+model6
+summary(model6)
+anova(model6)
+
+#UTS_PRAK_ANREG
+#WILMA TRI ADNAYAN_22106010022_27
+#GENAP_GANJIL(D)
+#NOMER 3(D)
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANREG")
+datauts3=read.csv("UTS3.CSV", header = TRUE)
+datauts3
+
+datauts3$dummy_D1=ifelse(datauts3$DL=="SMP",1,0) 
+datauts3$dummy_D1
+datauts3$dummy_D2=ifelse(datauts3$DL=="SMA",1,0) 
+datauts3$dummy_D2
+datauts3$dummy_D3=ifelse(datauts3$DL=="DIPLOMA",1,0) 
+datauts3$dummy_D3
+View(datauts3)
+
+
+#uji anova 1 
+y=datauts3$PPM
+x1=datauts3$IKK
+x2=datauts3$PP
+d1=datauts3$dummy_D1
+d2=datauts3$dummy_D2
+d3=datauts3$dummy_D3
+x=cbind(x1,x2,d1,d2,d3);x
+anova(lm(y~x1+x2+d1+d2+d3))
+#Model1(regresi dengan variabel dummy)
+regresidummy_1=lm(y~x1+x2+d1+d2+d3, data=datauts3)
+model1=regresidummy_1
+model1
+summary(model1)
+
+#uji anova 2
+anova(lm(y~d2))
+#Model2(mengeluarkan d1)
+regresidummy_d2=lm(y~x1+x2+d2+d3,data = datauts3)
+model2=regresidummy_d2
+model2
+summary(model2)
+anova(model2)
+
+#Model3(mengeluarkan x1)
+regresidummy_d3=lm(y~x2+d2+d3,data = datauts3)
+model3=regresidummy_d3
+model3
+summary(model3)
+anova(model3)
+
+#Model4(mengeluarkan d2)
+regresidummy_d4=lm(y~x2+d3,data = datauts3)
+model4=regresidummy_d4
+model4
+summary(model4)
+anova(model4)
+
+
+#Model5(mengeluarkan d3)
+regresidummy_d5=lm(y~x2,data = datauts3)
+model5=regresidummy_d5
+model5
+summary(model5)
+anova(model5)
