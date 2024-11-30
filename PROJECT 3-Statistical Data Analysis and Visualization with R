@@ -1,0 +1,67 @@
+#a.	Formulate your question
+
+#b.	Read in your data
+setwd("C:/Users/USER/OneDrive/Documents/PRAK ANDAT") # Mengatur direktori kerja ke folder tempat file disimpan
+UTS=read.csv("UTS ANDAT.CSV", header = TRUE) # Membaca file CSV
+UTS
+
+#c.	Check the packaging
+nrow(UTS) # Mengecek jumlah baris dalam dataset
+ncol(UTS) # Mengecek jumlah kolom dalam dataset
+str(UTS) # Mengecek struktur dataset
+
+#d.	Look at the top and the bottom of your data
+head(UTS)  # Menampilkan 6 baris pertama
+tail(UTS)  # Menampilkan 6 baris terakhir
+
+#e.	Check your “n”s
+head(table(UTS$math.score.Y.))
+head(table(UTS$lunch.X.))
+sum(is.na(UTS))  # Menghitung jumlah nilai yang hilang dalam dataset
+colSums(is.na(UTS))  # Menghitung jumlah nilai yang hilang per kolom
+unique(UTS$math.score.Y.)
+
+#f.	Validate with at least one external data source
+summary(UTS) # Statistik deskriptif untuk memastikan validitas data
+
+#g.	Make a plot (gunakan package ggplot2)
+library(ggplot2)
+# Membuat boxplot untuk membandingkan distribusi skor matematika berdasarkan tipe "lunch"
+ggplot(UTS, aes(x = lunch.X., y = math.score.Y.)) +
+  geom_boxplot(fill = "skyblue", color = "darkblue") +
+  theme_minimal() +
+  labs(
+    title = "Distribusi Skor Matematika Berdasarkan Tipe Lunch",
+    x = "Tipe Lunch",
+    y = "Skor Matematika"
+  )
+# Membuat scatter plot dengan jitter untuk menghindari tumpang tindih titik
+ggplot(UTS, aes(x = lunch.X., y = math.score.Y.)) +
+  geom_jitter(aes(color = lunch.X.), width = 0.2, height = 0) +
+  labs(title = "Scatter Plot: Skor Matematika vs Tipe Makan Siang",
+       x = "Tipe Makan Siang", 
+       y = "Skor Matematika") +
+  theme_minimal()
+#h.	Try the easy solution first
+# Membandingkan rata-rata skor matematika untuk setiap tipe "lunch"
+aggregate(math.score.Y. ~ lunch.X., data = UTS, FUN = mean)
+
+#i.	Follow up
+t.test(math.score.Y. ~ lunch.X., data = UTS)
+
+
+#3b.	Comparing Model Expectations to Reality: buat histogram variabel dependen 
+#dan bandingkan dengan histogram data yang berdistribusi normal!
+# Menghitung rata-rata dan deviasi standar dari skor matematika
+mean_score <- mean(UTS$math.score.Y)
+mean_score
+sd_score <- sd(UTS$math.score.Y)
+sd_score
+
+# Membuat histogram dari variabel dependen
+hist(UTS$math.score.Y, breaks = 20, probability = TRUE,
+     main = "Histogram Skor Matematika",
+     xlab = "Skor Matematika", col = "lightblue")
+
+# Menambahkan kurva distribusi normal
+curve(dnorm(x, mean = mean_score, sd = sd_score), add = TRUE, col = "red")
