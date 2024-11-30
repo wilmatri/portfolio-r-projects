@@ -7,6 +7,4 @@ Kumpulan proyek analisis data menggunakan R, meliputi:
 - Metode: K-Means dan Hierarchical Clustering.
 - Alat: R (ggplot2, factoextra).
 
-## Proyek 2: Regresi Linear
-- Dataset: Data penjualan.
-- Alat: R (lm, ggplot2).
+
